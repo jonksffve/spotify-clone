@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import { Modal } from 'antd';
+import { Modal, Spin } from 'antd';
 import { FormInstance } from 'antd/es/form';
 import Button from '../UI/Button';
 
@@ -9,6 +9,8 @@ interface BaseModalProps {
 	subtitle: string;
 	open: boolean;
 	form: FormInstance;
+	action: string;
+	disabled: boolean;
 	onSubmit(values: object): void;
 	onClose(): void;
 }
@@ -19,6 +21,8 @@ const BaseModal: React.FC<BaseModalProps> = ({
 	body,
 	open,
 	form,
+	action,
+	disabled,
 	onSubmit,
 	onClose,
 }) => {
@@ -50,19 +54,30 @@ const BaseModal: React.FC<BaseModalProps> = ({
 		>
 			<div className='flex flex-col gap-2'>
 				<div>{subtitle}</div>
-				<div className='flex flex-col items-center justify-center mt-2 min-h-[200px]'>
-					{body}
-				</div>
+				<Spin
+					spinning={disabled}
+					size='large'
+				>
+					<div className='flex flex-col items-center justify-center mt-2 min-h-[200px]'>
+						{body}
+					</div>
+				</Spin>
 			</div>
 			<div className='flex w-full justify-end'>
-				<div className='flex w-1/2 gap-1'>
+				<div className='flex flex-col md:flex-row w-full md:w-1/2 gap-1'>
 					<Button
 						onClick={onClose}
 						className='bg-transparent text-neutral-800 hover:border-black'
+						disabled={disabled}
 					>
 						Cancel
 					</Button>
-					<Button onClick={onSubmitHandler}>Login</Button>
+					<Button
+						onClick={onSubmitHandler}
+						disabled={disabled}
+					>
+						{action}
+					</Button>
 				</div>
 			</div>
 		</Modal>
