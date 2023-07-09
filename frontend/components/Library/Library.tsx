@@ -1,10 +1,11 @@
 import { AiOutlinePlus } from 'react-icons/ai';
 import { TbPlaylist } from 'react-icons/tb';
+import { useCallback } from 'react';
 
 const Library = () => {
-	const addSongHandler = () => {
+	const addSongHandler = useCallback(() => {
 		console.log('Trying to add new song - This will be handled later!');
-	};
+	}, []);
 
 	return (
 		<div className='flex flex-col'>

@@ -5,6 +5,7 @@ import { BiSearch } from 'react-icons/bi';
 import Button from './UI/Button';
 import { useDispatch } from 'react-redux';
 import { uiActions } from '../store/slices/ui-slice';
+import { useCallback } from 'react';
 
 interface HeaderProps {
 	children: React.ReactNode;
@@ -14,10 +15,13 @@ interface HeaderProps {
 const Header: React.FC<HeaderProps> = ({ children, className }) => {
 	const dispatch = useDispatch();
 
-	const loginBtnHandler = () => {
-		console.log('clicking');
+	const loginBtnHandler = useCallback(() => {
 		dispatch(uiActions.showLoginModal());
-	};
+	}, [dispatch]);
+
+	const signUpBtnHandler = useCallback(() => {
+		dispatch(uiActions.showRegisterModal());
+	}, [dispatch]);
 
 	return (
 		<div
@@ -66,7 +70,7 @@ const Header: React.FC<HeaderProps> = ({ children, className }) => {
 						<div>
 							<Button
 								className='bg-transparent text-neutral-300 font-medium'
-								onClick={() => {}}
+								onClick={signUpBtnHandler}
 							>
 								Sign up
 							</Button>
