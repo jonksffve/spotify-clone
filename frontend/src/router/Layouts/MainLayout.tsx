@@ -1,6 +1,7 @@
 import { Outlet } from 'react-router-dom';
 import Sidebar from '../../../components/Navigation/Sidebar';
 import LoginModal from '../../../components/Modals/LoginModal';
+import RegisterModal from '../../../components/Modals/RegisterModal';
 
 const MainLayout = () => {
 	return (
@@ -10,6 +11,7 @@ const MainLayout = () => {
 				<Outlet />
 			</main>
 			<LoginModal />
+			<RegisterModal />
 		</div>
 	);
 };
