@@ -4,14 +4,20 @@ from django.utils.translation import gettext_lazy as _
 
 
 class CustomUser(AbstractUser):
-    first_name = models.CharField(_("first name"), max_length=30, blank=False)
-    last_name = models.CharField(_("last name"), max_length=150, blank=False)
+    first_name = models.CharField(
+        _("first name"), max_length=30, blank=False, null=False
+    )
+    last_name = models.CharField(
+        _("last name"), max_length=150, blank=False, null=False
+    )
     email = models.EmailField(
         _("email address"),
         unique=True,
         error_messages={
             "unique": _("A user with that email address already exists."),
         },
+        blank=False,
+        null=False,
     )
     avatar = models.ImageField(
         _("user avatar"), upload_to="avatar/", blank=True, null=True
