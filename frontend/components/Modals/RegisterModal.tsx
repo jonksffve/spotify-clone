@@ -5,6 +5,7 @@ import { useForm } from 'antd/es/form/Form';
 import { useCallback, useState } from 'react';
 import { uiActions } from '../../store/slices/ui-slice';
 import { Form, Input } from 'antd';
+import { createUserAPI } from '../../api/authAPI';
 
 const RegisterModal = () => {
 	const uiState = useSelector((state: RootState) => state.ui);
@@ -13,14 +14,18 @@ const RegisterModal = () => {
 
 	const [form] = useForm();
 
-	const onSubmitHandler = useCallback((values: object) => {
-		console.log(values);
-		setIsLoading(true);
-	}, []);
-
 	const onCloseHandler = useCallback(() => {
 		dispatch(uiActions.closeRegisterModal());
 	}, [dispatch]);
+
+	const onSubmitHandler = useCallback(
+		async (values: object) => {
+			await createUserAPI(values, setIsLoading).then(() => {
+				onCloseHandler();
+			});
+		},
+		[onCloseHandler]
+	);
 
 	const bodyContent = (
 		<Form
@@ -62,6 +67,13 @@ const RegisterModal = () => {
 					<Input />
 				</Form.Item>
 			</div>
+			<Form.Item
+				name='password'
+				label='Password'
+				rules={[{ required: true, message: 'Introduce a password.' }]}
+			>
+				<Input.Password />
+			</Form.Item>
 		</Form>
 	);
 
