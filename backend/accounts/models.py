@@ -20,7 +20,11 @@ class CustomUser(AbstractUser):
         null=False,
     )
     avatar = models.ImageField(
-        _("user avatar"), upload_to="avatar/", blank=True, null=True
+        _("user avatar"),
+        upload_to="avatar/",
+        default="user-placeholder.jpeg",
+        blank=True,
+        null=True,
     )
 
     EMAIL_FIELD = "email"
