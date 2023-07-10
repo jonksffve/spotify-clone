@@ -32,3 +32,8 @@ To run this project locally, follow these steps:
 - Navigate to the frontend directory: cd frontend
 - Install the required Node packages: npm install
 - Start the frontend development server: npm run dev
+
+### TO DO:
+
+- Implement better TokenAuthentication as per DRF docs: https://james1345.github.io/django-rest-knox/
+- Implement OAuth so we can access with gmail or other platform: https://django-oauth-toolkit.readthedocs.io/en/latest/getting_started.html#what-is-oauth
