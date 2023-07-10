@@ -1,4 +1,5 @@
 django
 djangorestframework
 django-dotenv
+django-cors-headers
 Pillow
