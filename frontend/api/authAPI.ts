@@ -1,6 +1,9 @@
 import { toast } from 'react-toastify';
 import { toastifyOptions } from '../src/helpersConfig/toastifyConfig';
-import { ENDPOINT_ACCOUNT } from '../src/helpersConfig/routesConfig';
+import {
+	ENDPOINT_ACCOUNT,
+	ENDPOINT_TOKEN_AUTH,
+} from '../src/helpersConfig/routesConfig';
 import axios from 'axios';
 
 export const createUserAPI = async (
@@ -28,6 +31,31 @@ export const createUserAPI = async (
 		} else {
 			toast.error('An unexpected error occurred', toastifyOptions);
 		}
+	} finally {
+		setIsLoading(false);
+	}
+};
+
+export const createTokenAuthAPI = async (
+	data: object,
+	setIsLoading: (value: boolean) => void
+) => {
+	type UserResponse = {
+		token: string;
+		user: {
+			name: string;
+			avatar: string;
+			email: string;
+		};
+	};
+
+	try {
+		setIsLoading(true);
+		const response = await axios.post(ENDPOINT_TOKEN_AUTH, data);
+		return response.data as UserResponse;
+	} catch (error) {
+		toast.error('Could not log in, verify credentials.', toastifyOptions);
+		throw error;
 	} finally {
 		setIsLoading(false);
 	}
