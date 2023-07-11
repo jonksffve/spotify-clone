@@ -1,6 +1,5 @@
-import { useDispatch, useSelector } from 'react-redux';
+import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
 import BaseModal from './BaseModal';
-import { RootState } from '../../store/store';
 import { useForm } from 'antd/es/form/Form';
 import { useCallback, useState } from 'react';
 import { uiActions } from '../../store/slices/ui-slice';
@@ -8,8 +7,8 @@ import { Form, Input } from 'antd';
 import { createUserAPI } from '../../api/authAPI';
 
 const RegisterModal = () => {
-	const uiState = useSelector((state: RootState) => state.ui);
-	const dispatch = useDispatch();
+	const uiState = useAppSelector((state) => state.ui);
+	const dispatch = useAppDispatch();
 	const [isLoading, setIsLoading] = useState(false);
 
 	const [form] = useForm();

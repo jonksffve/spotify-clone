@@ -1,6 +1,5 @@
-import { useDispatch, useSelector } from 'react-redux';
+import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
 import BaseModal from './BaseModal';
-import { RootState } from '../../store/store';
 import { useCallback, useState } from 'react';
 import { uiActions } from '../../store/slices/ui-slice';
 import { Form, Input } from 'antd';
@@ -8,10 +7,14 @@ import { createTokenAuthAPI } from '../../api/authAPI';
 import { userActions } from '../../store/slices/user-slice';
 
 const LoginModal = () => {
-	const uiState = useSelector((state: RootState) => state.ui);
+	const uiState = useAppSelector((state) => state.ui);
 	const [isLoading, setIsLoading] = useState(false);
-	const dispatch = useDispatch();
+	const dispatch = useAppDispatch();
 	const [form] = Form.useForm();
+
+	const onCloseHandler = useCallback(() => {
+		dispatch(uiActions.closeLoginModal());
+	}, [dispatch]);
 
 	const onSubmitHandler = useCallback(
 		(values: object) => {
@@ -19,24 +22,23 @@ const LoginModal = () => {
 				.then((response) => {
 					const { token, user } = response;
 					localStorage.setItem('token_auth', token);
-					//localStorage.removeItem('token_auth');
 					dispatch(
 						userActions.setUser({
 							...user,
 							token,
+							logged: true,
 						})
 					);
 				})
 				.catch((err) => {
 					console.error(err);
+				})
+				.finally(() => {
+					onCloseHandler();
 				});
 		},
-		[dispatch]
+		[dispatch, onCloseHandler]
 	);
-
-	const onCloseHandler = useCallback(() => {
-		dispatch(uiActions.closeLoginModal());
-	}, [dispatch]);
 
 	const bodyContent = (
 		<Form
