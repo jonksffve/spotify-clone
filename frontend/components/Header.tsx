@@ -3,9 +3,11 @@ import { RxCaretLeft, RxCaretRight } from 'react-icons/rx';
 import { HiHome } from 'react-icons/hi';
 import { BiSearch } from 'react-icons/bi';
 import Button from './UI/Button';
-import { useDispatch } from 'react-redux';
 import { uiActions } from '../store/slices/ui-slice';
 import { useCallback } from 'react';
+import { useAppDispatch, useAppSelector } from '../hooks/hooks';
+import { userActions } from '../store/slices/user-slice';
+import { FaUserAlt } from 'react-icons/fa';
 
 interface HeaderProps {
 	children: React.ReactNode;
@@ -13,7 +15,8 @@ interface HeaderProps {
 }
 
 const Header: React.FC<HeaderProps> = ({ children, className }) => {
-	const dispatch = useDispatch();
+	const dispatch = useAppDispatch();
+	const user = useAppSelector((state) => state.user);
 
 	const loginBtnHandler = useCallback(() => {
 		dispatch(uiActions.showLoginModal());
@@ -21,6 +24,12 @@ const Header: React.FC<HeaderProps> = ({ children, className }) => {
 
 	const signUpBtnHandler = useCallback(() => {
 		dispatch(uiActions.showRegisterModal());
+	}, [dispatch]);
+
+	const logoutBtnHandler = useCallback(() => {
+		dispatch(uiActions.showLoginModal());
+		dispatch(userActions.removeUser());
+		localStorage.removeItem('token_auth');
 	}, [dispatch]);
 
 	return (
@@ -66,24 +75,41 @@ const Header: React.FC<HeaderProps> = ({ children, className }) => {
 					</button>
 				</div>
 				<div className='flex justify-between items-center gap-x-4'>
-					<>
-						<div>
-							<Button
-								className='bg-transparent text-neutral-300 font-medium'
-								onClick={signUpBtnHandler}
-							>
-								Sign up
-							</Button>
-						</div>
-						<div>
+					{user.logged ? (
+						<div className='flex gap-x-4 items-center'>
 							<Button
 								className='bg-white px-6 py-2'
-								onClick={loginBtnHandler}
+								onClick={logoutBtnHandler}
 							>
-								Log in
+								Logout
+							</Button>
+							<Button
+								className='bg-white'
+								onClick={() => {}}
+							>
+								<FaUserAlt />
 							</Button>
 						</div>
-					</>
+					) : (
+						<>
+							<div>
+								<Button
+									className='bg-transparent text-neutral-300 font-medium'
+									onClick={signUpBtnHandler}
+								>
+									Sign up
+								</Button>
+							</div>
+							<div>
+								<Button
+									className='bg-white px-6 py-2'
+									onClick={loginBtnHandler}
+								>
+									Log in
+								</Button>
+							</div>
+						</>
+					)}
 				</div>
 			</div>
 			{children}
