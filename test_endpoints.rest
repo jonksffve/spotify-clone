@@ -1,0 +1,2 @@
+GET http://localhost:8000/api/account/12312321321/
+Authorization: Token 12313213123123123123123
