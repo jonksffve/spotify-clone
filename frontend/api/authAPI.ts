@@ -6,6 +6,15 @@ import {
 } from '../src/helpersConfig/routesConfig';
 import axios from 'axios';
 
+type UserResponse = {
+	token: string;
+	user: {
+		name: string;
+		avatar: string;
+		email: string;
+	};
+};
+
 export const createUserAPI = async (
 	data: object,
 	setIsLoading: (value: boolean) => void
@@ -40,15 +49,6 @@ export const createTokenAuthAPI = async (
 	data: object,
 	setIsLoading: (value: boolean) => void
 ) => {
-	type UserResponse = {
-		token: string;
-		user: {
-			name: string;
-			avatar: string;
-			email: string;
-		};
-	};
-
 	try {
 		setIsLoading(true);
 		const response = await axios.post(ENDPOINT_TOKEN_AUTH, data);
@@ -58,5 +58,19 @@ export const createTokenAuthAPI = async (
 		throw error;
 	} finally {
 		setIsLoading(false);
+	}
+};
+
+export const getUserInformationAPI = async (token: string) => {
+	try {
+		const response = await axios.get(`${ENDPOINT_ACCOUNT}${token}/`, {
+			headers: {
+				Authorization: `Token ${token}`,
+			},
+		});
+		return response.data as UserResponse;
+	} catch (error) {
+		toast.error('Could not fetch information', toastifyOptions);
+		throw error;
 	}
 };
