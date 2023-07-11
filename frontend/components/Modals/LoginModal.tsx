@@ -4,6 +4,8 @@ import { RootState } from '../../store/store';
 import { useCallback, useState } from 'react';
 import { uiActions } from '../../store/slices/ui-slice';
 import { Form, Input } from 'antd';
+import { createTokenAuthAPI } from '../../api/authAPI';
+import { userActions } from '../../store/slices/user-slice';
 
 const LoginModal = () => {
 	const uiState = useSelector((state: RootState) => state.ui);
@@ -11,10 +13,26 @@ const LoginModal = () => {
 	const dispatch = useDispatch();
 	const [form] = Form.useForm();
 
-	const onSubmitHandler = useCallback((values: object) => {
-		console.log(values);
-		setIsLoading(true);
-	}, []);
+	const onSubmitHandler = useCallback(
+		(values: object) => {
+			createTokenAuthAPI(values, setIsLoading)
+				.then((response) => {
+					const { token, user } = response;
+					localStorage.setItem('token_auth', token);
+					//localStorage.removeItem('token_auth');
+					dispatch(
+						userActions.setUser({
+							...user,
+							token,
+						})
+					);
+				})
+				.catch((err) => {
+					console.error(err);
+				});
+		},
+		[dispatch]
+	);
 
 	const onCloseHandler = useCallback(() => {
 		dispatch(uiActions.closeLoginModal());
