@@ -1,4 +1,4 @@
-from rest_framework.serializers import ModelSerializer
+from rest_framework.serializers import ModelSerializer, SerializerMethodField
 from django.contrib.auth import get_user_model
 
 user_model = get_user_model()
@@ -18,6 +18,11 @@ class UserCreateSerializer(ModelSerializer):
 
 
 class UserListSerializer(ModelSerializer):
+    name = SerializerMethodField()
+
     class Meta:
         model = user_model
-        fields = ["first_name", "last_name", "email", "avatar", "username"]
+        fields = ["email", "avatar", "username", "name"]
+
+    def get_name(self, obj):
+        return obj.get_full_name()
