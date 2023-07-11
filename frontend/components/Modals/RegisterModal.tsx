@@ -19,10 +19,14 @@ const RegisterModal = () => {
 	}, [dispatch]);
 
 	const onSubmitHandler = useCallback(
-		async (values: object) => {
-			await createUserAPI(values, setIsLoading).then(() => {
-				onCloseHandler();
-			});
+		(values: object) => {
+			createUserAPI(values, setIsLoading)
+				.then(() => {
+					onCloseHandler();
+				})
+				.catch((err) => {
+					console.log(err);
+				});
 		},
 		[onCloseHandler]
 	);
