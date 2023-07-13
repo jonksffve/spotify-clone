@@ -1,86 +1,83 @@
-import { useState, useEffect, useCallback } from 'react';
-import { Modal, Spin } from 'antd';
-import { FormInstance } from 'antd/es/form';
+import { AiOutlineClose } from 'react-icons/ai';
+import { useState, useEffect } from 'react';
 import Button from '../UI/Button';
+import { Spin } from 'antd';
 
 interface BaseModalProps {
 	body: React.ReactNode;
+	isOpen: boolean;
+	disabled: boolean;
 	title: string;
 	subtitle: string;
-	open: boolean;
-	form: FormInstance;
 	action: string;
-	disabled: boolean;
-	onSubmit(values: object): void;
-	onClose(): void;
+	description: React.ReactNode;
+	onSubmit: () => void;
+	onClose: () => void;
 }
 
 const BaseModal: React.FC<BaseModalProps> = ({
+	body,
+	isOpen,
+	disabled,
 	title,
 	subtitle,
-	body,
-	open,
-	form,
 	action,
-	disabled,
+	description,
 	onSubmit,
 	onClose,
 }) => {
-	const [isModalOpen, setIsModalOpen] = useState(open);
+	const [showModal, setShowModal] = useState(isOpen);
 
 	useEffect(() => {
-		setIsModalOpen(open);
-	}, [open]);
+		setShowModal(isOpen);
+	}, [isOpen]);
 
-	const onSubmitHandler = useCallback(() => {
-		form
-			.validateFields()
-			.then((values: object) => {
-				form.resetFields();
-				onSubmit(values);
-			})
-			.catch((info) => {
-				console.log('Validate Failed:', info);
-			});
-	}, [form, onSubmit]);
+	if (!showModal) return;
 
 	return (
-		<Modal
-			title={title}
-			open={isModalOpen}
-			onOk={onSubmitHandler}
-			onCancel={onClose}
-			footer={null}
-		>
-			<div className='flex flex-col gap-2'>
-				<div>{subtitle}</div>
+		<>
+			{/* Overlay */}
+			<div
+				className='fixed inset-0 bg-neutral-900/60 backdrop-blur-sm'
+				onClick={onClose}
+			/>
+			{/* Container */}
+			<div className='fixed drop-shadow-md border border-neutral-700 top-[50%] left-[50%] max-h-full h-full md:h-auto md:max-h-[85vh] w-full md:max-w-[55vw] translate-x-[-50%] translate-y-[-50%] rounded-md bg-neutral-700 p-10 focus:outline-none'>
+				<div className='flex justify-between'>
+					<div className='text-xl font-bold mb-4'>{title}</div>
+					<AiOutlineClose
+						size={26}
+						className='text-neutral-400 hover:text-white focus:outline-none hover:cursor-pointer'
+						onClick={onClose}
+					/>
+				</div>
+				<div className='mb-5 text-sm'>{subtitle}</div>
 				<Spin
 					spinning={disabled}
 					size='large'
 				>
-					<div className='flex flex-col items-center justify-center mt-2 min-h-[200px]'>
-						{body}
-					</div>
+					<div className='p-5 mb-4'>{body}</div>
 				</Spin>
-			</div>
-			<div className='flex w-full justify-end'>
-				<div className='flex flex-col md:flex-row w-full md:w-1/2 gap-1'>
-					<Button
-						onClick={onClose}
-						className='bg-transparent text-neutral-800 hover:border-black'
-						disabled={disabled}
-					>
-						Cancel
-					</Button>
-					<Button
-						onClick={onSubmitHandler}
-						disabled={disabled}
-					>
-						{action}
-					</Button>
+				<div className='flex w-full justify-end mb-4'>
+					<div className='flex flex-col md:flex-row w-full md:w-1/2 gap-1'>
+						<Button
+							onClick={onClose}
+							className='bg-transparent text-white hover:border-black'
+							disabled={disabled}
+						>
+							Cancel
+						</Button>
+						<Button
+							onClick={onSubmit}
+							disabled={disabled}
+						>
+							{action}
+						</Button>
+					</div>
 				</div>
+				<div className='text-center'>{description}</div>
 			</div>
-		</Modal>
+		</>
 	);
 };
 

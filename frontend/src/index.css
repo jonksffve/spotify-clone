@@ -14,3 +14,7 @@ body,
 .ant-modal-mask {
 	background-color: rgba(0, 0, 0, 0.85) !important;
 }
+
+.ant-spin-nested-loading .ant-spin-blur {
+	opacity: 0 !important;
+}
