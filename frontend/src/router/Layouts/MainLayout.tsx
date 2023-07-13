@@ -2,6 +2,7 @@ import { Outlet } from 'react-router-dom';
 import Sidebar from '../../../components/Navigation/Sidebar';
 import LoginModal from '../../../components/Modals/LoginModal';
 import RegisterModal from '../../../components/Modals/RegisterModal';
+import UploadSongModal from '../../../components/Modals/UploadSongModal';
 import { useAuth } from '../../../hooks/useAuth';
 
 const MainLayout = () => {
@@ -15,6 +16,7 @@ const MainLayout = () => {
 			</main>
 			<LoginModal />
 			<RegisterModal />
+			<UploadSongModal />
 		</div>
 	);
 };
