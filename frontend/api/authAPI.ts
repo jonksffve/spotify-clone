@@ -51,6 +51,7 @@ export const createTokenAuthAPI = async (
 	try {
 		setIsLoading(true);
 		const response = await axios.post(ENDPOINT_TOKEN_AUTH, data);
+		toast.success('Welcome back user, enjoy.', toastifyOptions);
 		return response.data as UserResponse;
 	} catch (error) {
 		toast.error('Could not log in, verify credentials.', toastifyOptions);
