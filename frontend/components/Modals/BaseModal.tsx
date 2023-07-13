@@ -10,7 +10,7 @@ interface BaseModalProps {
 	title: string;
 	subtitle: string;
 	action: string;
-	description: React.ReactNode;
+	description?: React.ReactNode;
 	onSubmit: () => void;
 	onClose: () => void;
 }
@@ -22,7 +22,7 @@ const BaseModal: React.FC<BaseModalProps> = ({
 	title,
 	subtitle,
 	action,
-	description,
+	description = undefined,
 	onSubmit,
 	onClose,
 }) => {
@@ -42,7 +42,7 @@ const BaseModal: React.FC<BaseModalProps> = ({
 				onClick={onClose}
 			/>
 			{/* Container */}
-			<div className='fixed drop-shadow-md border border-neutral-700 top-[50%] left-[50%] max-h-full h-full md:h-auto md:max-h-[85vh] w-full md:max-w-[55vw] translate-x-[-50%] translate-y-[-50%] rounded-md bg-neutral-700 p-10 focus:outline-none'>
+			<div className='fixed drop-shadow-md border border-neutral-700 top-[50%] left-[50%] max-h-full h-full md:h-auto md:max-h-[85vh] w-full md:max-w-[55vw] translate-x-[-50%] translate-y-[-50%] rounded-md bg-neutral-700 p-6 focus:outline-none'>
 				<div className='flex justify-between'>
 					<div className='text-xl font-bold mb-4'>{title}</div>
 					<AiOutlineClose
@@ -75,7 +75,7 @@ const BaseModal: React.FC<BaseModalProps> = ({
 						</Button>
 					</div>
 				</div>
-				<div className='text-center'>{description}</div>
+				{description && <div className='text-center'>{description}</div>}
 			</div>
 		</>
 	);
