@@ -1,4 +1,7 @@
-from rest_framework.serializers import ModelSerializer, SerializerMethodField
+from rest_framework.serializers import (
+    ModelSerializer,
+    SerializerMethodField,
+)
 from rest_framework.authtoken.models import Token
 
 from django.contrib.auth import get_user_model
