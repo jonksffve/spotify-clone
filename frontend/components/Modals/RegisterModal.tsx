@@ -1,94 +1,187 @@
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
 import BaseModal from './BaseModal';
-import { useForm } from 'antd/es/form/Form';
+import { useForm, SubmitHandler, FieldValues } from 'react-hook-form';
 import { useCallback, useState } from 'react';
 import { uiActions } from '../../store/slices/ui-slice';
-import { Form, Input } from 'antd';
-import { createUserAPI } from '../../api/authAPI';
+import { IconType } from 'react-icons';
+import { AiOutlineUser, AiOutlineMail, AiOutlineFileAdd } from 'react-icons/ai';
+
+import { ErrorResponse, createUserAPI } from '../../api/authAPI';
+import Input from '../UI/Inputs/Input';
+import InputImage from '../UI/Inputs/InputImage';
+import { BsKey, BsKeyboard } from 'react-icons/bs';
+import { AxiosError } from 'axios';
+
+export interface RegisterFormInput {
+	username: string;
+	email: string;
+	first_name: string;
+	last_name: string;
+	password: string;
+	avatar: File | null;
+}
 
 const RegisterModal = () => {
 	const uiState = useAppSelector((state) => state.ui);
 	const dispatch = useAppDispatch();
 	const [isLoading, setIsLoading] = useState(false);
 
-	const [form] = useForm();
+	const {
+		register,
+		handleSubmit,
+		reset,
+		watch,
+		setValue,
+		setError,
+		formState: { errors },
+	} = useForm<RegisterFormInput>({
+		defaultValues: {
+			username: '',
+			email: '',
+			first_name: '',
+			last_name: '',
+			password: '',
+			avatar: null,
+		},
+	});
+
+	console.log(errors);
 
 	const onCloseHandler = useCallback(() => {
+		reset();
 		dispatch(uiActions.closeRegisterModal());
-	}, [dispatch]);
+	}, [dispatch, reset]);
 
-	const onSubmitHandler = useCallback(
-		(values: object) => {
-			createUserAPI(values, setIsLoading)
+	const onSubmit: SubmitHandler<RegisterFormInput> = useCallback(
+		(data) => {
+			createUserAPI(data, setIsLoading)
 				.then(() => {
 					onCloseHandler();
 				})
-				.catch((err) => {
-					console.log(err);
+				.catch((err: AxiosError) => {
+					const data = err.response?.data as ErrorResponse;
+
+					for (const err in data) {
+						setError(err, {
+							type: 'custom',
+							message: data[err as keyof ErrorResponse],
+						});
+					}
 				});
 		},
-		[onCloseHandler]
+		[onCloseHandler, setError]
 	);
 
+	const currentImage = watch('avatar');
+
 	const bodyContent = (
-		<Form
-			form={form}
-			name='registerForm'
-			initialValues={{ remember: true }}
+		<form
 			autoComplete='off'
-			className='flex flex-col w-full'
+			onSubmit={handleSubmit(onSubmit)}
 		>
-			<div className='flex flex-col md:flex-row gap-2'>
-				<Form.Item
-					name='username'
-					label='Username'
-					rules={[{ required: true, message: 'We need an unique username.' }]}
-				>
-					<Input />
-				</Form.Item>
-				<Form.Item
-					name='email'
-					label='Email'
-					rules={[{ required: true, message: 'We need your email.' }]}
-				>
-					<Input type='email' />
-				</Form.Item>
+			<div className='flex flex-col gap-3'>
+				<div className='flex flex-col md:flex-row gap-2'>
+					<div className='flex flex-col w-full'>
+						<Input
+							placeholder='Username'
+							icon={AiOutlineUser as IconType}
+							{...register('username', { required: true })}
+						/>
+						{errors.username?.type === 'required' && (
+							<p className='text-rose-500 text-sm mt-0'>
+								This field is required
+							</p>
+						)}
+						{errors.username?.type === 'custom' && (
+							<p className='text-rose-500 text-sm mt-0'>
+								{errors.username?.message}
+							</p>
+						)}
+					</div>
+					<div className='flex flex-col w-full'>
+						<Input
+							type='email'
+							placeholder='Email'
+							icon={AiOutlineMail as IconType}
+							{...register('email', { required: true })}
+						/>
+						{errors.email?.type === 'required' && (
+							<p className='text-rose-500 text-sm mt-0'>
+								This field is required
+							</p>
+						)}
+						{errors.email?.type === 'custom' && (
+							<p className='text-rose-500 text-sm mt-0'>
+								{errors.email?.message}
+							</p>
+						)}
+					</div>
+				</div>
+				<div className='flex flex-col md:flex-row gap-2'>
+					<div className='flex flex-col w-full'>
+						<Input
+							placeholder='First name'
+							icon={BsKeyboard as IconType}
+							{...register('first_name', { required: true })}
+						/>
+						{errors.first_name && (
+							<p className='text-rose-500 text-sm mt-0'>
+								This field is required
+							</p>
+						)}
+					</div>
+					<div className='flex flex-col w-full'>
+						<Input
+							placeholder='Last name'
+							icon={BsKeyboard as IconType}
+							{...register('last_name', { required: true })}
+						/>
+						{errors.last_name && (
+							<p className='text-rose-500 text-sm mt-0'>
+								This field is required
+							</p>
+						)}
+					</div>
+				</div>
+				<div className='flex flex-col md:flex-row gap-2'>
+					<div className='flex flex-col w-full'>
+						<Input
+							type='password'
+							placeholder='Password'
+							icon={BsKey as IconType}
+							{...register('password', { required: true })}
+						/>
+						{errors.password && (
+							<p className='text-rose-500 text-sm mt-0'>
+								This field is required
+							</p>
+						)}
+					</div>
+					<div className='flex flex-col w-full'>
+						<InputImage
+							icon={AiOutlineFileAdd as IconType}
+							onChange={(e) => {
+								setValue('avatar', e.target.files![0]);
+							}}
+							value={currentImage?.name}
+						/>
+					</div>
+				</div>
 			</div>
-			<div className='flex flex-col md:flex-row gap-2'>
-				<Form.Item
-					name='first_name'
-					label='First name'
-					rules={[{ required: true, message: 'We need your first name.' }]}
-				>
-					<Input />
-				</Form.Item>
-				<Form.Item
-					name='last_name'
-					label='Last name'
-					rules={[{ required: true, message: 'We need a last name.' }]}
-				>
-					<Input />
-				</Form.Item>
-			</div>
-			<Form.Item
-				name='password'
-				label='Password'
-				rules={[{ required: true, message: 'Introduce a password.' }]}
-			>
-				<Input.Password />
-			</Form.Item>
-		</Form>
+		</form>
 	);
+
+	const descriptionContent = <div>Already registered? LOG IN</div>;
 
 	return (
 		<BaseModal
-			open={uiState.showRegisterModal}
+			isOpen={uiState.showRegisterModal}
 			body={bodyContent}
 			title='Register modal'
 			subtitle='Welcome, we need this information'
-			form={form}
 			action='Register'
-			onSubmit={onSubmitHandler}
+			description={descriptionContent}
+			onSubmit={handleSubmit(onSubmit)}
 			onClose={onCloseHandler}
 			disabled={isLoading}
 		/>

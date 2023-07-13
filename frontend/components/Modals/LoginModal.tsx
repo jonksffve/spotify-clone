@@ -2,23 +2,43 @@ import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
 import BaseModal from './BaseModal';
 import { useCallback, useState } from 'react';
 import { uiActions } from '../../store/slices/ui-slice';
-import { Form, Input } from 'antd';
 import { createTokenAuthAPI } from '../../api/authAPI';
 import { userActions } from '../../store/slices/user-slice';
+import { useForm, SubmitHandler } from 'react-hook-form';
+import Input from '../UI/Inputs/Input';
+import { AiOutlineUser } from 'react-icons/ai';
+import { BsKey } from 'react-icons/bs';
+import { IconType } from 'react-icons';
+
+type LoginFormInput = {
+	username: string;
+	password: string;
+};
 
 const LoginModal = () => {
 	const uiState = useAppSelector((state) => state.ui);
 	const [isLoading, setIsLoading] = useState(false);
 	const dispatch = useAppDispatch();
-	const [form] = Form.useForm();
+	const {
+		register,
+		handleSubmit,
+		reset,
+		formState: { errors },
+	} = useForm<LoginFormInput>({
+		defaultValues: {
+			username: '',
+			password: '',
+		},
+	});
 
 	const onCloseHandler = useCallback(() => {
+		reset();
 		dispatch(uiActions.closeLoginModal());
-	}, [dispatch]);
+	}, [dispatch, reset]);
 
-	const onSubmitHandler = useCallback(
-		(values: object) => {
-			createTokenAuthAPI(values, setIsLoading)
+	const onSubmit: SubmitHandler<LoginFormInput> = useCallback(
+		(formData) => {
+			createTokenAuthAPI(formData, setIsLoading)
 				.then((response) => {
 					const { token, user } = response;
 					localStorage.setItem('token_auth', token);
@@ -41,40 +61,55 @@ const LoginModal = () => {
 	);
 
 	const bodyContent = (
-		<Form
-			form={form}
-			name='loginForm'
-			initialValues={{ remember: true }}
+		<form
+			onSubmit={handleSubmit(onSubmit)}
 			autoComplete='off'
 		>
-			<Form.Item
-				label='Username'
-				name='username'
-				rules={[{ required: true, message: 'We need your username!' }]}
-			>
-				<Input />
-			</Form.Item>
-
-			<Form.Item
-				label='Password'
-				name='password'
-				rules={[{ required: true, message: 'Please input your password!' }]}
-			>
-				<Input.Password />
-			</Form.Item>
-		</Form>
+			<div className='flex flex-col gap-4'>
+				<Input
+					placeholder='Enter your username'
+					icon={AiOutlineUser as IconType}
+					{...register('username', { required: true })}
+					aria-invalid={errors.username ? 'true' : 'false'}
+				/>
+				{errors.username?.type === 'required' && (
+					<p
+						role='alert'
+						className='text-rose-400 font-bold text-lg'
+					>
+						First name is required
+					</p>
+				)}
+				<Input
+					type='password'
+					placeholder='Enter your password'
+					icon={BsKey as IconType}
+					{...register('password', { required: true })}
+				/>
+				{errors.password?.type === 'required' && (
+					<p
+						role='alert'
+						className='text-rose-400 font-bold text-lg'
+					>
+						Password is required
+					</p>
+				)}
+			</div>
+		</form>
 	);
+
+	const descriptionContent = <div>Don't have accont? REGISTER</div>;
 
 	return (
 		<BaseModal
 			disabled={isLoading}
-			open={uiState.showLoginModal}
+			isOpen={uiState.showLoginModal}
 			body={bodyContent}
 			title='Login'
 			subtitle='Please enter your login information'
-			form={form}
 			action='Login'
-			onSubmit={onSubmitHandler}
+			description={descriptionContent}
+			onSubmit={handleSubmit(onSubmit)}
 			onClose={onCloseHandler}
 		/>
 	);
