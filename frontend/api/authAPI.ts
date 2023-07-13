@@ -5,38 +5,37 @@ import {
 	ENDPOINT_TOKEN_AUTH,
 } from '../src/helpersConfig/routesConfig';
 import axios from 'axios';
+import { RegisterFormInput } from '../components/Modals/RegisterModal';
 
-type UserResponse = {
+export interface UserResponse {
 	token: string;
 	user: {
 		name: string;
 		avatar: string;
 		email: string;
 	};
-};
+}
+
+export interface ErrorResponse {
+	key: string;
+	value: string;
+}
 
 export const createUserAPI = async (
-	data: object,
+	data: RegisterFormInput,
 	setIsLoading: (value: boolean) => void
 ) => {
-	type ErrorResponse = {
-		key: string;
-		value: string;
-	};
-
 	try {
 		setIsLoading(true);
-		await axios.post(ENDPOINT_ACCOUNT, data);
+		await axios.post(ENDPOINT_ACCOUNT, data, {
+			headers: {
+				'content-type': 'multipart/form-data',
+			},
+		});
 		toast.success('Account created successfully', toastifyOptions);
 	} catch (error) {
 		if (axios.isAxiosError(error)) {
-			const data = error.response?.data as ErrorResponse;
-			for (const err in data) {
-				toast.error(
-					`${err}: ${data[err as keyof ErrorResponse]}`,
-					toastifyOptions
-				);
-			}
+			throw error;
 		} else {
 			toast.error('An unexpected error occurred', toastifyOptions);
 		}
