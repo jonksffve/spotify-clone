@@ -5,6 +5,8 @@ from accounts.serializers import (
     UserListSerializer,
     TokenSerializer,
 )
+from webapp.models import SongFile
+from webapp.serializers import SongCreateSerializer
 
 
 from rest_framework.generics import CreateAPIView, RetrieveAPIView
@@ -43,3 +45,12 @@ class CustomAuthToken(ObtainAuthToken):
                 "user": user_serializer.data,
             }
         )
+
+
+class SongCreateView(CreateAPIView):
+    permission_classes = [IsAuthenticated]
+    queryset = SongFile.objects.all()
+    serializer_class = SongCreateSerializer
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
