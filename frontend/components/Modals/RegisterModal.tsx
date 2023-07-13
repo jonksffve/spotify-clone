@@ -1,6 +1,6 @@
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
 import BaseModal from './BaseModal';
-import { useForm, SubmitHandler, FieldValues } from 'react-hook-form';
+import { useForm, SubmitHandler } from 'react-hook-form';
 import { useCallback, useState } from 'react';
 import { uiActions } from '../../store/slices/ui-slice';
 import { IconType } from 'react-icons';
@@ -8,7 +8,6 @@ import { AiOutlineUser, AiOutlineMail, AiOutlineFileAdd } from 'react-icons/ai';
 
 import { ErrorResponse, createUserAPI } from '../../api/authAPI';
 import Input from '../UI/Inputs/Input';
-import InputImage from '../UI/Inputs/InputImage';
 import { BsKey, BsKeyboard } from 'react-icons/bs';
 import { AxiosError } from 'axios';
 
@@ -30,7 +29,6 @@ const RegisterModal = () => {
 		register,
 		handleSubmit,
 		reset,
-		watch,
 		setValue,
 		setError,
 		formState: { errors },
@@ -44,8 +42,6 @@ const RegisterModal = () => {
 			avatar: null,
 		},
 	});
-
-	console.log(errors);
 
 	const onCloseHandler = useCallback(() => {
 		reset();
@@ -72,8 +68,6 @@ const RegisterModal = () => {
 		[onCloseHandler, setError]
 	);
 
-	const currentImage = watch('avatar');
-
 	const bodyContent = (
 		<form
 			autoComplete='off'
@@ -83,6 +77,7 @@ const RegisterModal = () => {
 				<div className='flex flex-col md:flex-row gap-2'>
 					<div className='flex flex-col w-full'>
 						<Input
+							id='username'
 							placeholder='Username'
 							icon={AiOutlineUser as IconType}
 							{...register('username', { required: true })}
@@ -100,6 +95,7 @@ const RegisterModal = () => {
 					</div>
 					<div className='flex flex-col w-full'>
 						<Input
+							id='email'
 							type='email'
 							placeholder='Email'
 							icon={AiOutlineMail as IconType}
@@ -120,6 +116,7 @@ const RegisterModal = () => {
 				<div className='flex flex-col md:flex-row gap-2'>
 					<div className='flex flex-col w-full'>
 						<Input
+							id='first_name'
 							placeholder='First name'
 							icon={BsKeyboard as IconType}
 							{...register('first_name', { required: true })}
@@ -132,6 +129,7 @@ const RegisterModal = () => {
 					</div>
 					<div className='flex flex-col w-full'>
 						<Input
+							id='last_name'
 							placeholder='Last name'
 							icon={BsKeyboard as IconType}
 							{...register('last_name', { required: true })}
@@ -146,6 +144,7 @@ const RegisterModal = () => {
 				<div className='flex flex-col md:flex-row gap-2'>
 					<div className='flex flex-col w-full'>
 						<Input
+							id='password'
 							type='password'
 							placeholder='Password'
 							icon={BsKey as IconType}
@@ -158,12 +157,17 @@ const RegisterModal = () => {
 						)}
 					</div>
 					<div className='flex flex-col w-full'>
-						<InputImage
+						<Input
+							id='avatar'
+							type='file'
 							icon={AiOutlineFileAdd as IconType}
-							onChange={(e) => {
-								setValue('avatar', e.target.files![0]);
-							}}
-							value={currentImage?.name}
+							{...(register('avatar'),
+							{ required: false },
+							{
+								onChange: (event) => {
+									setValue('avatar', event.target.files[0]);
+								},
+							})}
 						/>
 					</div>
 				</div>
