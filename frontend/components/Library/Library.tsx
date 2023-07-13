@@ -1,11 +1,15 @@
 import { AiOutlinePlus } from 'react-icons/ai';
 import { TbPlaylist } from 'react-icons/tb';
 import { useCallback } from 'react';
+import { useAppDispatch } from '../../hooks/hooks';
+import { uiActions } from '../../store/slices/ui-slice';
 
 const Library = () => {
+	const dispatch = useAppDispatch();
+
 	const addSongHandler = useCallback(() => {
-		console.log('Trying to add new song - This will be handled later!');
-	}, []);
+		dispatch(uiActions.showUploadModal());
+	}, [dispatch]);
 
 	return (
 		<div className='flex flex-col'>
