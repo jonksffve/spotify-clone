@@ -25,6 +25,5 @@
 		"checkJs": true
 	},
 	"include": ["src", "store", "pages", "hooks", "components", "api"],
-	"exclude": ["node_modules"],
 	"references": [{ "path": "./tsconfig.node.json" }]
 }
