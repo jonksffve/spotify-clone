@@ -17,13 +17,12 @@ const Library = () => {
 	useEffect(() => {
 		if (!userState.token) return;
 
-		getSongsAPI(userState.token, setIsLoading, 'user_only')
-			.then((res) => {
-				if (res) {
-					setLibrarySongs(res);
-				}
-			})
-			.catch((err) => console.error(err));
+		void getSongsAPI(
+			userState.token,
+			setIsLoading,
+			setLibrarySongs,
+			new URLSearchParams({ user_only: '' })
+		);
 	}, [userState.token]);
 
 	const addSongHandler = useCallback(() => {

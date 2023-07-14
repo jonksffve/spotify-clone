@@ -5,7 +5,6 @@ import PageContent from '../components/PageContent';
 import { Song } from '../src/helpersConfig/types';
 import { getSongsAPI } from '../api/songAPI';
 import { useAppSelector } from '../hooks/hooks';
-import { AxiosResponse } from 'axios';
 
 const IndexPage = () => {
 	const [songs, setSongs] = useState<Song[]>([]);
@@ -15,13 +14,7 @@ const IndexPage = () => {
 	useEffect(() => {
 		if (!userState.token) return;
 
-		getSongsAPI(userState.token, setIsLoading)
-			.then((res) => {
-				if (res) {
-					setSongs(res);
-				}
-			})
-			.catch((err) => console.log(err));
+		void getSongsAPI(userState.token, setIsLoading, setSongs);
 	}, [userState.token]);
 
 	return (

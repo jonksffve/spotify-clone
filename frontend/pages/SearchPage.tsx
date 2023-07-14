@@ -19,14 +19,7 @@ const SearchPage = () => {
 			return;
 		}
 
-		getSongsAPI(userState.token, setIsLoading, searchParams)
-			.then((res) => {
-				if (!res) return;
-				setSongs(res);
-			})
-			.catch((err) => {
-				console.log(err);
-			});
+		void getSongsAPI(userState.token, setIsLoading, setSongs, searchParams);
 	}, [searchParams, userState.token]);
 
 	return (

@@ -31,6 +31,7 @@ export const createSongAPI = async (
 export const getSongsAPI = async (
 	token: string,
 	setIsLoading: (value: boolean) => void,
+	setData: (data: Song[]) => void,
 	query?: URLSearchParams
 ) => {
 	try {
@@ -47,7 +48,7 @@ export const getSongsAPI = async (
 				Authorization: `Token ${token}`,
 			},
 		});
-		return response.data as Song[];
+		setData(response.data as Song[]);
 	} catch (error) {
 		toast.error('Something happened', toastifyOptions);
 	} finally {
