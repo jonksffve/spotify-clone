@@ -5,6 +5,7 @@ import PageContent from '../components/PageContent';
 import { Song } from '../src/helpersConfig/types';
 import { getSongsAPI } from '../api/songAPI';
 import { useAppSelector } from '../hooks/hooks';
+import { ROUTE_LIKED } from '../src/helpersConfig/routesConfig';
 
 const IndexPage = () => {
 	const [songs, setSongs] = useState<Song[]>([]);
@@ -33,7 +34,7 @@ const IndexPage = () => {
 						<ListItem
 							image='src/assets/liked.png'
 							name='Liked songs'
-							hrefTo='/'
+							hrefTo={ROUTE_LIKED}
 						/>
 					</div>
 				</div>

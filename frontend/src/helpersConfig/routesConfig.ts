@@ -8,3 +8,4 @@ export const ENDPOINT_SONG_LIKE = 'http://localhost:8000/api/song/like/';
 //APP ENDPOINTS
 export const ROUTE_HOME = '/';
 export const ROUTE_SEARCH = '/search/';
+export const ROUTE_LIKED = '/liked/';
