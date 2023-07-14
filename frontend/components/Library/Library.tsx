@@ -50,6 +50,9 @@ const Library = () => {
 					<Spinner />
 				) : (
 					<div>
+						{librarySongs.length === 0 && (
+							<div className='text-center mt-4'>No songs have been found</div>
+						)}
 						{librarySongs.map((song) => (
 							<MediaItem
 								key={song.id}
