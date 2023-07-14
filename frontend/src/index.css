@@ -18,3 +18,7 @@ body,
 .ant-spin-nested-loading .ant-spin-blur {
 	opacity: 0 !important;
 }
+
+.ant-spin-dot {
+	color: white !important;
+}
