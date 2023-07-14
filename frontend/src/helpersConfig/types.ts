@@ -40,4 +40,10 @@ export interface Song {
 	cover_image: string;
 	song_file: string;
 	user: string;
+	is_liked: boolean;
+}
+
+export interface SongLikeResponse {
+	id: string;
+	song: Song;
 }

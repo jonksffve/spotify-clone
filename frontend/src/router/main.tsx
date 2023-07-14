@@ -3,6 +3,7 @@ import MainLayout from './Layouts/MainLayout';
 import ErrorPage from '../../pages/ErrorPage';
 import IndexPage from '../../pages/IndexPage';
 import SearchPage from '../../pages/SearchPage';
+import LikedPage from '../../pages/LikedPage';
 
 export const router = createBrowserRouter([
 	{
@@ -20,7 +21,7 @@ export const router = createBrowserRouter([
 			},
 			{
 				path: 'liked/',
-				element: <div>Liked music</div>,
+				element: <LikedPage />,
 			},
 		],
 	},

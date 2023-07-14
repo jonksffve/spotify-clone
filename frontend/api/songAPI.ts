@@ -5,7 +5,11 @@ import {
 	ENDPOINT_SONG,
 	ENDPOINT_SONG_LIKE,
 } from '../src/helpersConfig/routesConfig';
-import { Song, UploadSongInputs } from '../src/helpersConfig/types';
+import {
+	Song,
+	SongLikeResponse,
+	UploadSongInputs,
+} from '../src/helpersConfig/types';
 
 export const createSongAPI = async (
 	data: UploadSongInputs,
@@ -51,6 +55,26 @@ export const getSongsAPI = async (
 		setData(response.data as Song[]);
 	} catch (error) {
 		toast.error('Something happened', toastifyOptions);
+	} finally {
+		setIsLoading(false);
+	}
+};
+
+export const getLikedSongsAPI = async (
+	token: string,
+	setIsLoading: (value: boolean) => void,
+	setData: (values: SongLikeResponse[]) => void
+) => {
+	try {
+		setIsLoading(true);
+		const response = await axios.get(ENDPOINT_SONG_LIKE, {
+			headers: {
+				Authorization: `Token ${token}`,
+			},
+		});
+		setData(response.data as SongLikeResponse[]);
+	} catch (error) {
+		toast.error('Could not fetch data', toastifyOptions);
 	} finally {
 		setIsLoading(false);
 	}
