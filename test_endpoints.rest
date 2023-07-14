@@ -5,3 +5,7 @@ Authorization: Token cb85580bcbc243a3876f372e0d2934ed004c5489
 ### Checking {GET} by title response data
 GET http://localhost:8000/api/song/?title=ra
 Authorization: Token cb85580bcbc243a3876f372e0d2934ed004c5489
+
+### Checking {GET} list likes
+GET http://localhost:8000/api/song/like/
+Authorization: Token cb85580bcbc243a3876f372e0d2934ed004c5489
