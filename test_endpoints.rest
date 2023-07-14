@@ -1,2 +1,7 @@
-GET http://localhost:8000/api/account/12312321321/
-Authorization: Token 12313213123123123123123
+### Checking {GET} song endpoint response data
+GET http://localhost:8000/api/song/
+Authorization: Token cb85580bcbc243a3876f372e0d2934ed004c5489
+
+### Checking {GET} by title response data
+GET http://localhost:8000/api/song/?title=ra
+Authorization: Token cb85580bcbc243a3876f372e0d2934ed004c5489
