@@ -10,6 +10,7 @@ from webapp.serializers import (
     SongCreateSerializer,
     SongListSerializer,
     SongLikeSerializer,
+    SongLikeListSerializer,
 )
 
 
@@ -80,12 +81,23 @@ class SongCreateView(ListCreateAPIView):
         serializer.save(user=self.request.user)
 
 
-class SongLikeCreateView(CreateAPIView):
+class SongLikeListCreateView(ListCreateAPIView):
     permission_classes = [IsAuthenticated]
-    queryset = SongLike.objects.all()
-    serializer_class = SongLikeSerializer
+    queryset = None
+    serializer_class = None
 
-    # 1 like per user to the same song
+    # 1 like per user to the same song (create)
+    # Retrieve all songs liked by an user
+
+    def get_queryset(self):
+        if self.request.method == "POST":
+            return SongLike.objects.all()
+        return SongLike.objects.filter(user=self.request.user)
+
+    def get_serializer_class(self):
+        if self.request.method == "POST":
+            return SongLikeSerializer
+        return SongLikeListSerializer
 
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(

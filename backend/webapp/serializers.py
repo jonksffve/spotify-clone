@@ -24,3 +24,11 @@ class SongLikeSerializer(ModelSerializer):
     class Meta:
         model = SongLike
         fields = ["user", "song"]
+
+
+class SongLikeListSerializer(ModelSerializer):
+    song = SongListSerializer()
+
+    class Meta:
+        model = SongLike
+        fields = ["id", "user", "song"]
