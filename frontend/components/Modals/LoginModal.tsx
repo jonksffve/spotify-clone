@@ -9,11 +9,7 @@ import Input from '../UI/Inputs/Input';
 import { AiOutlineUser } from 'react-icons/ai';
 import { BsKey } from 'react-icons/bs';
 import { IconType } from 'react-icons';
-
-type LoginFormInput = {
-	username: string;
-	password: string;
-};
+import { LoginFormInput } from '../../src/helpersConfig/types';
 
 const LoginModal = () => {
 	const uiState = useAppSelector((state) => state.ui);

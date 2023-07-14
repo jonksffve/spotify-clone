@@ -5,21 +5,7 @@ import {
 	ENDPOINT_TOKEN_AUTH,
 } from '../src/helpersConfig/routesConfig';
 import axios from 'axios';
-import { RegisterFormInput } from '../components/Modals/RegisterModal';
-
-export interface UserResponse {
-	token: string;
-	user: {
-		name: string;
-		avatar: string;
-		email: string;
-	};
-}
-
-export interface ErrorResponse {
-	key: string;
-	value: string;
-}
+import { RegisterFormInput, UserResponse } from '../src/helpersConfig/types';
 
 export const createUserAPI = async (
 	data: RegisterFormInput,

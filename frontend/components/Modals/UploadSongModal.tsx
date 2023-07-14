@@ -8,13 +8,7 @@ import { BsKeyboard, BsFileEarmarkMusic } from 'react-icons/bs';
 import { BiUserVoice, BiImageAdd } from 'react-icons/bi';
 import { IconType } from 'react-icons';
 import { createSongAPI } from '../../api/songAPI';
-
-export interface UploadSongInputs {
-	title: string;
-	song_author: string;
-	cover_image: File;
-	song_file: File;
-}
+import { UploadSongInputs } from '../../src/helpersConfig/types';
 
 const UploadSongModal = () => {
 	const dispatch = useAppDispatch();
@@ -25,6 +19,7 @@ const UploadSongModal = () => {
 	const {
 		register,
 		handleSubmit,
+		reset,
 		setError,
 		setValue,
 		formState: { errors },
@@ -38,9 +33,9 @@ const UploadSongModal = () => {
 	});
 
 	const closeHandler = useCallback(() => {
-		//reset()
+		reset();
 		dispatch(uiActions.closeUploadModal());
-	}, [dispatch]);
+	}, [dispatch, reset]);
 
 	const onSubmit: SubmitHandler<UploadSongInputs> = useCallback(
 		(data) => {
@@ -55,14 +50,14 @@ const UploadSongModal = () => {
 			}
 
 			createSongAPI(data, userState.token, setIsLoading)
-				.then((res) => {
-					console.log(res);
+				.then(() => {
+					closeHandler();
 				})
 				.catch((err) => {
 					console.log(err);
 				});
 		},
-		[setError, userState.token]
+		[setError, userState.token, closeHandler]
 	);
 
 	const bodyContent = (
@@ -132,7 +127,7 @@ const UploadSongModal = () => {
 		<BaseModal
 			isOpen={uiState.showUploadModal}
 			body={bodyContent}
-			disabled={false}
+			disabled={isLoading}
 			title='What is your music taste?'
 			subtitle='Show us by uploading your music!'
 			action='Upload'
