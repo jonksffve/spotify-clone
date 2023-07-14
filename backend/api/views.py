@@ -9,7 +9,7 @@ from webapp.models import SongFile
 from webapp.serializers import SongCreateSerializer
 
 
-from rest_framework.generics import CreateAPIView, RetrieveAPIView
+from rest_framework.generics import CreateAPIView, RetrieveAPIView, ListCreateAPIView
 from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.authtoken.models import Token
 from rest_framework.response import Response
@@ -47,10 +47,15 @@ class CustomAuthToken(ObtainAuthToken):
         )
 
 
-class SongCreateView(CreateAPIView):
+class SongCreateView(ListCreateAPIView):
     permission_classes = [IsAuthenticated]
-    queryset = SongFile.objects.all()
+    queryset = None
     serializer_class = SongCreateSerializer
+
+    def get_queryset(self):
+        if "user_only" in self.request.query_params:
+            return SongFile.objects.filter(user=self.request.user)
+        return SongFile.objects.all()
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
