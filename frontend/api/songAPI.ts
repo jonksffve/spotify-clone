@@ -2,7 +2,7 @@ import { toast } from 'react-toastify';
 import { toastifyOptions } from '../src/helpersConfig/toastifyConfig';
 import axios from 'axios';
 import { ENDPOINT_SONG } from '../src/helpersConfig/routesConfig';
-import { UploadSongInputs } from '../components/Modals/UploadSongModal';
+import { Song, UploadSongInputs } from '../src/helpersConfig/types';
 
 export const createSongAPI = async (
 	data: UploadSongInputs,
@@ -17,9 +17,35 @@ export const createSongAPI = async (
 				'content-type': 'multipart/form-data',
 			},
 		});
-		toast.success('Music uploaded successfully!');
+		toast.success('Music uploaded successfully!', toastifyOptions);
 	} catch (error) {
-		console.log(error);
+		toast.error('Something happened', toastifyOptions);
+	} finally {
+		setIsLoading(false);
+	}
+};
+
+export const getSongsAPI = async (
+	token: string,
+	setIsLoading: (value: boolean) => void,
+	query?: string
+) => {
+	try {
+		setIsLoading(true);
+
+		let url = ENDPOINT_SONG;
+
+		if (query) {
+			url += `?${query}`;
+		}
+
+		const response = await axios.get(url, {
+			headers: {
+				Authorization: `Token ${token}`,
+			},
+		});
+		return response.data as Song[];
+	} catch (error) {
 		toast.error('Something happened', toastifyOptions);
 	} finally {
 		setIsLoading(false);

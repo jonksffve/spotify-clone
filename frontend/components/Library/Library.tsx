@@ -1,11 +1,30 @@
 import { AiOutlinePlus } from 'react-icons/ai';
 import { TbPlaylist } from 'react-icons/tb';
-import { useCallback } from 'react';
-import { useAppDispatch } from '../../hooks/hooks';
+import { useCallback, useEffect, useState } from 'react';
+import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
 import { uiActions } from '../../store/slices/ui-slice';
+import Spinner from '../UI/Spinner/Spinner';
+import { Song } from '../../src/helpersConfig/types';
+import MediaItem from './MediaItem';
+import { getSongsAPI } from '../../api/songAPI';
 
 const Library = () => {
 	const dispatch = useAppDispatch();
+	const userState = useAppSelector((state) => state.user);
+	const [librarySongs, setLibrarySongs] = useState<Song[]>([]);
+	const [isLoading, setIsLoading] = useState(false);
+
+	useEffect(() => {
+		if (!userState.token) return;
+
+		getSongsAPI(userState.token, setIsLoading, 'user_only')
+			.then((res) => {
+				if (res) {
+					setLibrarySongs(res);
+				}
+			})
+			.catch((err) => console.error(err));
+	}, [userState.token]);
 
 	const addSongHandler = useCallback(() => {
 		dispatch(uiActions.showUploadModal());
@@ -27,7 +46,21 @@ const Library = () => {
 					onClick={addSongHandler}
 				/>
 			</div>
-			<div className='flex flex-col gap-y-2 mt-4 px-3'>List of songs!</div>
+			<div className='flex flex-col gap-y-2 mt-4 px-3'>
+				{isLoading ? (
+					<Spinner />
+				) : (
+					<div>
+						{librarySongs.map((song) => (
+							<MediaItem
+								key={song.id}
+								data={song}
+								onClick={() => {}}
+							/>
+						))}
+					</div>
+				)}
+			</div>
 		</div>
 	);
 };
