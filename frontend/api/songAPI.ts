@@ -1,7 +1,10 @@
 import { toast } from 'react-toastify';
 import { toastifyOptions } from '../src/helpersConfig/toastifyConfig';
 import axios from 'axios';
-import { ENDPOINT_SONG } from '../src/helpersConfig/routesConfig';
+import {
+	ENDPOINT_SONG,
+	ENDPOINT_SONG_LIKE,
+} from '../src/helpersConfig/routesConfig';
 import { Song, UploadSongInputs } from '../src/helpersConfig/types';
 
 export const createSongAPI = async (
@@ -28,7 +31,7 @@ export const createSongAPI = async (
 export const getSongsAPI = async (
 	token: string,
 	setIsLoading: (value: boolean) => void,
-	query?: string
+	query?: URLSearchParams
 ) => {
 	try {
 		setIsLoading(true);
@@ -36,7 +39,7 @@ export const getSongsAPI = async (
 		let url = ENDPOINT_SONG;
 
 		if (query) {
-			url += `?${query}`;
+			url += `?${query.toString()}`;
 		}
 
 		const response = await axios.get(url, {
@@ -49,5 +52,37 @@ export const getSongsAPI = async (
 		toast.error('Something happened', toastifyOptions);
 	} finally {
 		setIsLoading(false);
+	}
+};
+
+export const likeSongAPI = async (
+	songId: string,
+	token: string,
+	isLiked: boolean,
+	setIsLiked: (value: boolean) => void
+) => {
+	try {
+		if (isLiked) {
+			await axios.delete(`${ENDPOINT_SONG_LIKE}${songId}/`, {
+				headers: {
+					Authorization: `Token ${token}`,
+				},
+			});
+		} else {
+			await axios.post(
+				ENDPOINT_SONG_LIKE,
+				{
+					song: songId,
+				},
+				{
+					headers: {
+						Authorization: `Token ${token}`,
+					},
+				}
+			);
+		}
+		setIsLiked(!isLiked);
+	} catch (error) {
+		toast.error('Could not like song', toastifyOptions);
 	}
 };
