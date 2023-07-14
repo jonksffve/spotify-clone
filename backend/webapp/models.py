@@ -29,3 +29,25 @@ class SongFile(models.Model):
 
     def __str__(self):
         return f"{self.title} by {self.song_author}"
+
+
+class SongLike(models.Model):
+    song = models.ForeignKey(
+        SongFile, verbose_name=_("Song"), related_name="likes", on_delete=models.CASCADE
+    )
+    user = models.ForeignKey(
+        "accounts.CustomUser",
+        verbose_name=_("User"),
+        on_delete=models.CASCADE,
+    )
+    date_created = models.DateTimeField(
+        _("Date liked"), auto_now=False, auto_now_add=True
+    )
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(fields=["user", "song"], name="unique_like")
+        ]
+
+    def __str__(self):
+        return f"{self.user} likes {self.song}"
