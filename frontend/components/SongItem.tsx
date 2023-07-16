@@ -3,7 +3,7 @@ import PlayButton from './UI/Buttons/PlayButton';
 
 interface SongItemProps {
 	data: Song;
-	onClick: () => void;
+	onClick: (value: Song) => void;
 }
 
 const SongItem: React.FC<SongItemProps> = ({ data, onClick }) => {
@@ -22,7 +22,12 @@ const SongItem: React.FC<SongItemProps> = ({ data, onClick }) => {
 					By: {data.song_author}
 				</p>
 			</div>
-			<div className='absolute bottom-24 right-5'>
+			<div
+				className='absolute bottom-24 right-5'
+				onClick={() => {
+					onClick(data);
+				}}
+			>
 				<PlayButton />
 			</div>
 		</div>

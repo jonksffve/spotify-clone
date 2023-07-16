@@ -2,12 +2,17 @@ import { Song } from '../../src/helpersConfig/types';
 
 interface MediaItemProps {
 	data: Song;
-	onClick: () => void;
+	onClick?: (id: string) => void;
 }
 
 const MediaItem: React.FC<MediaItemProps> = ({ data, onClick }) => {
 	return (
-		<div className='flex items-center gap-x-3 cursor-pointer hover:bg-neutral-800/50 w-full p-2 rounded-md'>
+		<div
+			className='flex items-center gap-x-3 cursor-pointer hover:bg-neutral-800/50 w-full p-2 rounded-md'
+			onClick={() => {
+				if (onClick) onClick(data.id);
+			}}
+		>
 			<div className='relative rounded-md min-h-[48px] max-h-[48px] min-w-[48px] max-w-[48px] overflow-hidden'>
 				<img
 					className='object-cover'

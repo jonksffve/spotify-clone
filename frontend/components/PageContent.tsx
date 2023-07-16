@@ -1,11 +1,25 @@
+import { useCallback } from 'react';
 import { Song } from '../src/helpersConfig/types';
 import SongItem from './SongItem';
+import { useAppDispatch } from '../hooks/hooks';
+import { uiActions } from '../store/slices/ui-slice';
 
 interface PageContentProps {
 	songs: Song[];
 }
 
 const PageContent: React.FC<PageContentProps> = ({ songs }) => {
+	const dispatch = useAppDispatch();
+
+	const handlePlayBtn = useCallback(
+		(song: Song) => {
+			dispatch(uiActions.showMusicPlayer());
+			dispatch(uiActions.setPlayerSong(song));
+			dispatch(uiActions.setPlayerPlaylist(songs));
+		},
+		[dispatch, songs]
+	);
+
 	if (songs.length === 0) {
 		return (
 			<div className='mt-4 text-neutral-400'>No songs have been added.</div>
@@ -27,7 +41,7 @@ const PageContent: React.FC<PageContentProps> = ({ songs }) => {
 			{songs.map((song) => (
 				<SongItem
 					key={song.id}
-					onClick={() => {}}
+					onClick={handlePlayBtn}
 					data={song}
 				/>
 			))}
