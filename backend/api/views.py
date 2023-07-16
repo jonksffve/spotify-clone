@@ -73,7 +73,7 @@ class SongCreateView(ListCreateAPIView):
             return SongFile.objects.filter(
                 title__icontains=self.request.query_params["title"]
             )
-        if "user_only" in self.request.query_params:
+        if "user_uploaded" in self.request.query_params:
             return SongFile.objects.filter(user=self.request.user)
         return SongFile.objects.all()
 

@@ -21,13 +21,23 @@ const Library = () => {
 			userState.token,
 			setIsLoading,
 			setLibrarySongs,
-			new URLSearchParams({ user_only: '' })
+			new URLSearchParams({ user_uploaded: '' })
 		);
 	}, [userState.token]);
 
 	const addSongHandler = useCallback(() => {
 		dispatch(uiActions.showUploadModal());
 	}, [dispatch]);
+
+	const handleClickItem = useCallback(
+		(id: string) => {
+			console.log('Clicked: ', id);
+			dispatch(uiActions.showMusicPlayer());
+			dispatch(uiActions.setPlayerSong(librarySongs[0]));
+			dispatch(uiActions.setPlayerPlaylist(librarySongs));
+		},
+		[dispatch, librarySongs]
+	);
 
 	return (
 		<div className='flex flex-col'>
@@ -57,7 +67,7 @@ const Library = () => {
 							<MediaItem
 								key={song.id}
 								data={song}
-								onClick={() => {}}
+								onClick={handleClickItem}
 							/>
 						))}
 					</div>
