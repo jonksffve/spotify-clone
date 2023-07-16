@@ -3,6 +3,12 @@ from .models import SongFile, SongLike
 
 
 class SongCreateSerializer(ModelSerializer):
+    """
+    Serializer used to create Song model instances
+
+    User: is required in model definition, we're getting user from request.user (authentication is a MUST!)
+    """
+
     class Meta:
         model = SongFile
         fields = ["title", "song_author", "song_file", "cover_image"]
@@ -23,7 +29,7 @@ class SongListSerializer(ModelSerializer):
 class SongLikeSerializer(ModelSerializer):
     class Meta:
         model = SongLike
-        fields = ["user", "song"]
+        fields = ["song"]
 
 
 class SongLikeListSerializer(ModelSerializer):
