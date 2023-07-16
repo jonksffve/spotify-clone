@@ -4,6 +4,7 @@ import LoginModal from '../../../components/Modals/LoginModal';
 import RegisterModal from '../../../components/Modals/RegisterModal';
 import UploadSongModal from '../../../components/Modals/UploadSongModal';
 import { useAuth } from '../../../hooks/useAuth';
+import MusicPlayer from '../../../components/Player/MusicPlayer';
 
 const MainLayout = () => {
 	useAuth();
@@ -17,6 +18,7 @@ const MainLayout = () => {
 			<LoginModal />
 			<RegisterModal />
 			<UploadSongModal />
+			<MusicPlayer />
 		</div>
 	);
 };
