@@ -1,3 +1,7 @@
+### Checking UserRetrieve endpoint View response data
+GET http://localhost:8000/api/account/cb85580bcbc243a3876f372e0d2934ed004c5489/
+Authorization: Token cb85580bcbc243a3876f372e0d2934ed004c5489
+
 ### Checking {GET} song endpoint response data
 GET http://localhost:8000/api/song/
 Authorization: Token cb85580bcbc243a3876f372e0d2934ed004c5489
@@ -9,3 +13,13 @@ Authorization: Token cb85580bcbc243a3876f372e0d2934ed004c5489
 ### Checking {GET} list likes
 GET http://localhost:8000/api/song/like/
 Authorization: Token cb85580bcbc243a3876f372e0d2934ed004c5489
+
+
+#TEST LIST ENDPOINT RESPONSE DATA BASED ON QUERY PARAMS
+# DATA FILTERED BY TITLE?
+# DATA UPLOADED BY USER
+# ALL MODEL DATA?
+
+
+#TEST LIST SONGLIKE RESPONSE
+#GET USER LIKED SONGS
