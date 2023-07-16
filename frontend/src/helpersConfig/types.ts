@@ -45,5 +45,6 @@ export interface Song {
 
 export interface SongLikeResponse {
 	id: string;
+	user: string;
 	song: Song;
 }
