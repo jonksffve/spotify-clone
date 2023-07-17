@@ -18,14 +18,14 @@ export interface RegisterFormInput {
 	first_name: string;
 	last_name: string;
 	password: string;
-	avatar: File | null;
+	avatar: File | null | undefined;
 }
 
 export interface UploadSongInputs {
 	title: string;
 	song_author: string;
-	cover_image: File;
-	song_file: File;
+	cover_image: File | null | undefined;
+	song_file: File | null | undefined;
 }
 
 export interface LoginFormInput {
