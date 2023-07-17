@@ -8,6 +8,7 @@ import { useCallback } from 'react';
 import { useAppDispatch, useAppSelector } from '../hooks/hooks';
 import { userActions } from '../store/slices/user-slice';
 import { FaUserAlt } from 'react-icons/fa';
+import { useNavigate } from 'react-router-dom';
 
 interface HeaderProps {
 	children: React.ReactNode;
@@ -17,6 +18,7 @@ interface HeaderProps {
 const Header: React.FC<HeaderProps> = ({ children, className }) => {
 	const dispatch = useAppDispatch();
 	const user = useAppSelector((state) => state.user);
+	const navigate = useNavigate();
 
 	const loginBtnHandler = useCallback(() => {
 		dispatch(uiActions.showLoginModal());
@@ -27,10 +29,12 @@ const Header: React.FC<HeaderProps> = ({ children, className }) => {
 	}, [dispatch]);
 
 	const logoutBtnHandler = useCallback(() => {
-		dispatch(uiActions.showLoginModal());
 		dispatch(userActions.removeUser());
+		dispatch(uiActions.resetPlayer());
 		localStorage.removeItem('token_auth');
-	}, [dispatch]);
+		navigate('/');
+		navigate(0);
+	}, [dispatch, navigate]);
 
 	return (
 		<div
