@@ -58,7 +58,7 @@ const LoginModal = () => {
 
 	const bodyContent = (
 		<form
-			onSubmit={handleSubmit(onSubmit)}
+			onSubmit={void handleSubmit(onSubmit)}
 			autoComplete='off'
 		>
 			<div className='flex flex-col gap-4'>

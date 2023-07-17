@@ -41,6 +41,7 @@ const RegisterModal = () => {
 	const onCloseHandler = useCallback(() => {
 		reset();
 		dispatch(uiActions.closeRegisterModal());
+		dispatch(uiActions.showLoginModal());
 	}, [dispatch, reset]);
 
 	const onSubmit: SubmitHandler<RegisterFormInput> = useCallback(
@@ -66,7 +67,7 @@ const RegisterModal = () => {
 	const bodyContent = (
 		<form
 			autoComplete='off'
-			onSubmit={handleSubmit(onSubmit)}
+			onSubmit={void handleSubmit(onSubmit)}
 		>
 			<div className='flex flex-col gap-3'>
 				<Input
@@ -138,7 +139,7 @@ const RegisterModal = () => {
 					{ required: false },
 					{
 						onChange: (event) => {
-							setValue('avatar', event.target.files[0]);
+							setValue('avatar', event.target.files?.item(0));
 						},
 					})}
 				/>

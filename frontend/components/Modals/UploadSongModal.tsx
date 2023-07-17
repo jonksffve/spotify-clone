@@ -94,7 +94,7 @@ const UploadSongModal = () => {
 						{ required: false },
 						{
 							onChange: (event) => {
-								setValue('cover_image', event.target.files[0]);
+								setValue('cover_image', event.target.files?.item(0));
 							},
 						})}
 					/>
@@ -111,7 +111,7 @@ const UploadSongModal = () => {
 						{ required: true },
 						{
 							onChange: (event) => {
-								setValue('song_file', event.target.files[0]);
+								setValue('song_file', event.target.files?.item(0));
 							},
 						})}
 					/>
