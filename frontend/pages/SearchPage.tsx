@@ -1,17 +1,19 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import Header from '../components/Header';
 import SearchContent from '../components/SearchContent';
 import SearchInput from '../components/UI/Inputs/SearchInput';
 import { Song } from '../src/helpersConfig/types';
 import { useSearchParams } from 'react-router-dom';
 import { getSongsAPI } from '../api/songAPI';
-import { useAppSelector } from '../hooks/hooks';
+import { useAppDispatch, useAppSelector } from '../hooks/hooks';
+import { uiActions } from '../store/slices/ui-slice';
 
 const SearchPage = () => {
 	const [searchParams, setSearchParams] = useSearchParams();
 	const [songs, setSongs] = useState<Song[]>([]);
 	const [isLoading, setIsLoading] = useState(false);
 	const userState = useAppSelector((state) => state.user);
+	const dispatch = useAppDispatch();
 
 	useEffect(() => {
 		if (!userState.token || !searchParams.has('title')) {
@@ -22,6 +24,15 @@ const SearchPage = () => {
 		void getSongsAPI(userState.token, setIsLoading, setSongs, searchParams);
 	}, [searchParams, userState.token]);
 
+	const handleClick = useCallback(
+		(song: Song) => {
+			dispatch(uiActions.showMusicPlayer());
+			dispatch(uiActions.setPlayerSong(song));
+			dispatch(uiActions.setPlayerPlaylist(songs));
+		},
+		[dispatch, songs]
+	);
+
 	return (
 		<div className='bg-neutral-900 rounded-lg h-full w-full overflow-hidden overflow-y-auto'>
 			<Header className='from-bg-neutral-900'>
@@ -30,7 +41,11 @@ const SearchPage = () => {
 					<SearchInput />
 				</div>
 			</Header>
-			<SearchContent songs={songs} />
+			<SearchContent
+				songs={songs}
+				isLoading={isLoading}
+				onClick={handleClick}
+			/>
 		</div>
 	);
 };
