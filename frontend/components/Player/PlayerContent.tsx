@@ -21,9 +21,6 @@ const PlayerContent: React.FC<PlayerContentProps> = ({ song }) => {
 	const uiState = useAppSelector((state) => state.ui);
 	const dispatch = useAppDispatch();
 
-	console.log(uiState.playlist);
-	console.log(song);
-
 	const [play, { pause, sound }] = useSound(song.song_file, {
 		volume,
 		onplay: () => setIsPlaying(true),

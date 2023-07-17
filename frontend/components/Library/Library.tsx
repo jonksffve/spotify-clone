@@ -30,10 +30,9 @@ const Library = () => {
 	}, [dispatch]);
 
 	const handleClickItem = useCallback(
-		(id: string) => {
-			console.log('Clicked: ', id);
+		(song: Song) => {
 			dispatch(uiActions.showMusicPlayer());
-			dispatch(uiActions.setPlayerSong(librarySongs[0]));
+			dispatch(uiActions.setPlayerSong(song));
 			dispatch(uiActions.setPlayerPlaylist(librarySongs));
 		},
 		[dispatch, librarySongs]
