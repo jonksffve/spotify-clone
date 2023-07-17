@@ -54,6 +54,11 @@ const uiSlice = createSlice({
 		setPlayerPlaylist: (state, action: PayloadAction<Song[]>) => {
 			state.playlist = action.payload;
 		},
+		resetPlayer: (state) => {
+			state.showMusicPlayer = false;
+			state.song = undefined;
+			state.playlist = undefined;
+		},
 	},
 });
 
