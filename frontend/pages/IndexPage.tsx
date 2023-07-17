@@ -6,6 +6,7 @@ import { Song } from '../src/helpersConfig/types';
 import { getSongsAPI } from '../api/songAPI';
 import { useAppSelector } from '../hooks/hooks';
 import { ROUTE_LIKED } from '../src/helpersConfig/routesConfig';
+import Spinner from '../components/UI/Spinner/Spinner';
 
 const IndexPage = () => {
 	const [songs, setSongs] = useState<Song[]>([]);
@@ -51,7 +52,8 @@ const IndexPage = () => {
 			</Header>
 			<div className='mt-2 mb-7 px-6'>
 				<div className='flex flex-col'>
-					{userState.token && (
+					{userState.token && isLoading && <Spinner />}
+					{userState.token && !isLoading && (
 						<>
 							<h2 className='text-white text-2xl font-semibold'>
 								Newest songs
