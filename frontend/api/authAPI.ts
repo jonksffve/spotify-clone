@@ -5,8 +5,20 @@ import {
 	ENDPOINT_TOKEN_AUTH,
 } from '../src/helpersConfig/routesConfig';
 import axios from 'axios';
-import { RegisterFormInput, UserResponse } from '../src/helpersConfig/types';
+import {
+	LoginFormInput,
+	RegisterFormInput,
+	UserResponse,
+} from '../src/helpersConfig/types';
 
+/**
+ * Function that creates an User modal instance
+ *
+ * @async
+ * @param data FormData payload to be sent to server
+ * @param setIsLoading Callback that sets the component's loading state
+ * @throws {AxiosError} Object with messages if it went wrong
+ */
 export const createUserAPI = async (
 	data: RegisterFormInput,
 	setIsLoading: (value: boolean) => void
@@ -30,8 +42,17 @@ export const createUserAPI = async (
 	}
 };
 
+/**
+ * Function that authenticates an user with the given data
+ *
+ * @async
+ * @param data FormData payload with username, password
+ * @param setIsLoading Callback that sets the component's loading state
+ * @returns User object containing authorization token and user information
+ * @throws Error object with messages if it went wrong
+ */
 export const createTokenAuthAPI = async (
-	data: object,
+	data: LoginFormInput,
 	setIsLoading: (value: boolean) => void
 ) => {
 	try {
@@ -47,6 +68,14 @@ export const createTokenAuthAPI = async (
 	}
 };
 
+/**
+ * Function that gets the information about the locally loggedin user
+ *
+ * @async
+ * @param token User permission value to handle requests
+ * @returns User object data as a response
+ * @throws Error object with messages if it went wrong
+ */
 export const getUserInformationAPI = async (token: string) => {
 	try {
 		const response = await axios.get(`${ENDPOINT_ACCOUNT}${token}/`, {

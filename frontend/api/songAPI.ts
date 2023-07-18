@@ -11,6 +11,14 @@ import {
 	UploadSongInputs,
 } from '../src/helpersConfig/types';
 
+/**
+ * Function that creates a Song model instance
+ *
+ * @async
+ * @param data FormData containing the song information
+ * @param token Permission value to handle the request
+ * @param setIsLoading Callback to set component's loading state
+ */
 export const createSongAPI = async (
 	data: UploadSongInputs,
 	token: string,
@@ -32,6 +40,15 @@ export const createSongAPI = async (
 	}
 };
 
+/**
+ * Function that retrieves a queryset containing Songs and updates components state
+ *
+ * @async
+ * @param token Permission value to handle requests
+ * @param setIsLoading Callback that sets the component's loading state
+ * @param setData Callback that sets the component's Song[] state
+ * @param [query] Optional: Value used to filter the queryset data returned from server
+ */
 export const getSongsAPI = async (
 	token: string,
 	setIsLoading: (value: boolean) => void,
@@ -60,6 +77,14 @@ export const getSongsAPI = async (
 	}
 };
 
+/**
+ * Function that retrieves a queryset containing Liked Songs and updates components state
+ *
+ * @async
+ * @param token Permission value to handle requests
+ * @param setIsLoading Callback that sets component's loading state
+ * @param setData Callback that sets the component's SongLikeReponse[] state
+ */
 export const getLikedSongsAPI = async (
 	token: string,
 	setIsLoading: (value: boolean) => void,
@@ -80,6 +105,15 @@ export const getLikedSongsAPI = async (
 	}
 };
 
+/**
+ * Function that handles both creation/deletion of LikeSong model instances
+ *
+ * @async
+ * @param songId Identifier of the Song model instance
+ * @param token Permission to handle the request
+ * @param isLiked Boolean that determines if we create or destroy an instance
+ * @param setIsLiked Callback that sets the component's like state
+ */
 export const likeSongAPI = async (
 	songId: string,
 	token: string,
