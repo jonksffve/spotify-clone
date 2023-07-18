@@ -33,7 +33,7 @@ const LoginModal = () => {
 	}, [dispatch, reset]);
 
 	const onSubmit: SubmitHandler<LoginFormInput> = useCallback(
-		(formData) => {
+		(formData: LoginFormInput) => {
 			createTokenAuthAPI(formData, setIsLoading)
 				.then((response) => {
 					const { token, user } = response;
