@@ -1,6 +1,6 @@
 import { useCallback } from 'react';
 import { Song } from '../src/helpersConfig/types';
-import SongItem from './SongItem';
+import SongItem from './Player/SongItem';
 import { useAppDispatch } from '../hooks/hooks';
 import { uiActions } from '../store/slices/ui-slice';
 

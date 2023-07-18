@@ -1,6 +1,6 @@
 import { AiOutlineClose } from 'react-icons/ai';
 import { useState, useEffect } from 'react';
-import Button from '../UI/Button';
+import Button from '../UI/Buttons/Button';
 import { Spin } from 'antd';
 
 interface BaseModalProps {

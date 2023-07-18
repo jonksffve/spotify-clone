@@ -1,5 +1,5 @@
 import { Song } from '../src/helpersConfig/types';
-import HeartButton from './HeartButton';
+import HeartButton from './UI/Buttons/HeartButton';
 import MediaItem from './Library/MediaItem';
 import Spinner from './UI/Spinner/Spinner';
 

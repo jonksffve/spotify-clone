@@ -1,10 +1,10 @@
 import { BsPauseFill, BsPlayFill } from 'react-icons/bs';
 import { Song } from '../../src/helpersConfig/types';
-import HeartButton from '../HeartButton';
+import HeartButton from '../UI/Buttons/HeartButton';
 import MediaItem from '../Library/MediaItem';
 import { AiFillStepBackward, AiFillStepForward } from 'react-icons/ai';
 import { HiSpeakerWave, HiSpeakerXMark } from 'react-icons/hi2';
-import Slider from '../Slider';
+import Slider from './Slider';
 import { useCallback, useEffect, useState } from 'react';
 import { IconType } from 'react-icons';
 import useSound from 'use-sound';

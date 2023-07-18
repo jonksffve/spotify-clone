@@ -1,5 +1,5 @@
 import { useEffect, useState, useCallback } from 'react';
-import Header from '../components/Header';
+import Header from '../components/Navigation/Header';
 import SearchContent from '../components/SearchContent';
 import SearchInput from '../components/UI/Inputs/SearchInput';
 import { Song } from '../src/helpersConfig/types';

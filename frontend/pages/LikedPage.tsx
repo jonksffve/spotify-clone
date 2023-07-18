@@ -1,4 +1,4 @@
-import Header from '../components/Header';
+import Header from '../components/Navigation/Header';
 import { useEffect, useState } from 'react';
 import { SongLikeResponse } from '../src/helpersConfig/types';
 import { useAppSelector } from '../hooks/hooks';

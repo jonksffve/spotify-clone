@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useAppDispatch } from '../hooks/hooks';
 import { Song, SongLikeResponse } from '../src/helpersConfig/types';
-import HeartButton from './HeartButton';
+import HeartButton from './UI/Buttons/HeartButton';
 import MediaItem from './Library/MediaItem';
 import { uiActions } from '../store/slices/ui-slice';
 

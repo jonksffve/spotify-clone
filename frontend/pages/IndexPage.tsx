@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import Header from '../components/Header';
+import Header from '../components/Navigation/Header';
 import ListItem from '../components/ListItem';
 import PageContent from '../components/PageContent';
 import { Song } from '../src/helpersConfig/types';
