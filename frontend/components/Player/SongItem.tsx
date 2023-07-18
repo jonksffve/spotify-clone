@@ -1,5 +1,5 @@
-import { Song } from '../src/helpersConfig/types';
-import PlayButton from './UI/Buttons/PlayButton';
+import { Song } from '../../src/helpersConfig/types';
+import PlayButton from '../UI/Buttons/PlayButton';
 
 interface SongItemProps {
 	data: Song;

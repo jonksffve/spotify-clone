@@ -1,8 +1,8 @@
 import { AiFillHeart, AiOutlineHeart } from 'react-icons/ai';
 import { useCallback, useState, useEffect } from 'react';
 import { IconType } from 'react-icons';
-import { likeSongAPI } from '../api/songAPI';
-import { useAppSelector } from '../hooks/hooks';
+import { likeSongAPI } from '../../../api/songAPI';
+import { useAppSelector } from '../../../hooks/hooks';
 
 interface HeartButtonProps {
 	songId: string;

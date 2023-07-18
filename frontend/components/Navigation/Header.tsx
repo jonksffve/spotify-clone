@@ -2,11 +2,11 @@ import { twMerge } from 'tailwind-merge';
 import { RxCaretLeft, RxCaretRight } from 'react-icons/rx';
 import { HiHome } from 'react-icons/hi';
 import { BiSearch } from 'react-icons/bi';
-import Button from './UI/Button';
-import { uiActions } from '../store/slices/ui-slice';
+import Button from '../UI/Buttons/Button';
+import { uiActions } from '../../store/slices/ui-slice';
 import { useCallback } from 'react';
-import { useAppDispatch, useAppSelector } from '../hooks/hooks';
-import { userActions } from '../store/slices/user-slice';
+import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
+import { userActions } from '../../store/slices/user-slice';
 import { FaUserAlt } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 
